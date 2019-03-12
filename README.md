@@ -7,3 +7,7 @@ DNN_bvlc_googlenet文件夹：
 
 opencv3.4.3的DNN模块调用bvlc_googlenet.caffemodel实现图像分类
 对应博客：https://blog.csdn.net/qq_30815237/article/details/87916157
+
+facedelete/dnn_face_detectorcaffe文件夹：
+
+opencv基于DNN调用caffe模型进行人脸检测
