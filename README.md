@@ -1,4 +1,4 @@
-# OpenCV
+﻿# OpenCV
 1、Image_correction_contours.cpp  基于轮廓的矫正算法
 
 2、Image_correction_linear.cpp 基于直线探测的矫正算法
@@ -14,3 +14,5 @@ opencv3.4.3的DNN模块调用bvlc_googlenet.caffemodel实现图像分类
 5、facedelete/naar_cascades.cpp:采用haar特征级联器实现人脸检测
 
 6、facedelete/ pedestrianHOG.cpp：采用HOG+SVM进行 行人识别
+
+7、facedelete/LBP_face.cpp:实现LBPCascades进行人脸检测
