@@ -14,20 +14,20 @@ int main()
 {
 	Mat input, img_gray, img_sobel, img_threshold, result;
 	input = imread("16.jpg");
-	cvtColor(input, img_gray, CV_BGR2GRAY);//×ªÎª»Ò¶ÈÍ¼Ïñ
-	blur(img_gray, img_gray, Size(5, 5));  //Ê¹ÓÃ5*5¸ßË¹Ä£ºıÈ¥Ôë
+	cvtColor(input, img_gray, CV_BGR2GRAY);//è½¬ä¸ºç°åº¦å›¾åƒ
+	blur(img_gray, img_gray, Size(5, 5));  //ä½¿ç”¨5*5é«˜æ–¯æ¨¡ç³Šå»å™ª
 
-	Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0);//²ÉÓÃsobelÂË²¨Æ÷ÕÒÊúÖ±±ß
+	Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0);//é‡‡ç”¨sobelæ»¤æ³¢å™¨æ‰¾ç«–ç›´è¾¹
 
-	//¶şÖµ»¯Í¼Ïñ£¬ãĞÖµÓÉOtsuËã·¨µÃµ½,ºöÂÔãĞÖµ²ÎÊı£¨thresholdº¯ÊıÖĞµÄµÚÈı¸ö²ÎÊı£©
+	//äºŒå€¼åŒ–å›¾åƒï¼Œé˜ˆå€¼ç”±Otsuç®—æ³•å¾—åˆ°,å¿½ç•¥é˜ˆå€¼å‚æ•°ï¼ˆthresholdå‡½æ•°ä¸­çš„ç¬¬ä¸‰ä¸ªå‚æ•°ï¼‰
 	threshold(img_sobel, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 	imshow("img_threshold", img_threshold);
-	Mat element = getStructuringElement(MORPH_RECT, Size(17, 3)); /*¶¨Òå±ÕĞÎÌ¬Ñ§Ëã×ÓÖĞÊ¹ÓÃµÄ½á¹¹ÔªËØ¡£*/
+	Mat element = getStructuringElement(MORPH_RECT, Size(17, 3)); /*å®šä¹‰é—­å½¢æ€å­¦ç®—å­ä¸­ä½¿ç”¨çš„ç»“æ„å…ƒç´ ã€‚*/
 	morphologyEx(img_threshold, img_threshold, CV_MOP_CLOSE, element);
 
 	
 
-	//findContoursº¯ÊıÈ¥³ı·Ç³µÅÆºÅÇøÓò
+	//findContourså‡½æ•°å»é™¤éè½¦ç‰Œå·åŒºåŸŸ
 	vector < vector < Point > > contours;
 	findContours(img_threshold, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
@@ -35,29 +35,29 @@ int main()
 	vector <vector <Point>> ::iterator itc = contours.begin();
 	vector <RotatedRect> rects;
 
-	// ¸ù¾İÃæ»ıºÍ¿í¸ß±È£¬ÒÆ³ı·Ç³µÅÆ¾ØĞÎ¿ò
+	// æ ¹æ®é¢ç§¯å’Œå®½é«˜æ¯”ï¼Œç§»é™¤éè½¦ç‰ŒçŸ©å½¢æ¡†
 	while (itc != contours.end())
 	{
 		RotatedRect mr = minAreaRect(Mat(*itc));
 		if (!verifySizes(mr))
-			itc = contours.erase(itc);//É¾³ıvectorÈİÆ÷ÖĞµÄÒ»¸ö»òÕßÒ»¶ÎÔªËØ£¬É¾³ıÒ»¸öÔªËØµÄÊ±ºò£¬Æä²ÎÊıÎªÖ¸ÏòÏàÓ¦ÔªËØµÄµü´úÆ÷
+			itc = contours.erase(itc);//åˆ é™¤vectorå®¹å™¨ä¸­çš„ä¸€ä¸ªæˆ–è€…ä¸€æ®µå…ƒç´ ï¼Œåˆ é™¤ä¸€ä¸ªå…ƒç´ çš„æ—¶å€™ï¼Œå…¶å‚æ•°ä¸ºæŒ‡å‘ç›¸åº”å…ƒç´ çš„è¿­ä»£å™¨
 		else
 		{
 			++itc;
-			rects.push_back(mr);//Âú×ãÌõ¼şµÄ¾ØĞÎ¿ò´æÈë
+			rects.push_back(mr);//æ»¡è¶³æ¡ä»¶çš„çŸ©å½¢æ¡†å­˜å…¥
 		}
 	}
-	printf("¼ì²âµ½µÄ³µÅÆºòÑ¡ÇøÓò¸öÊı£º%d",rects.size());
+	printf("æ£€æµ‹åˆ°çš„è½¦ç‰Œå€™é€‰åŒºåŸŸä¸ªæ•°ï¼š%d",rects.size());
 	/*for (int i = 0; i < rects.size(); i++) {
 		Point2f point[4];
-		rects[i].points(point);//Íâ½Ó¾ØĞÎµÄ4¸ö¶¥µã
-		for (int i = 0; i < 4; i++)//»æÖÆÍâ½Ó¾ØĞÎ
+		rects[i].points(point);//å¤–æ¥çŸ©å½¢çš„4ä¸ªé¡¶ç‚¹
+		for (int i = 0; i < 4; i++)//ç»˜åˆ¶å¤–æ¥çŸ©å½¢
 			line(input, point[i], point[(i + 1) % 4], Scalar(255, 0, 0));
 	}
 	imshow("input", input);*/
 
 	input.copyTo(result);
-	/*ÀûÓÃÂşË®Ìî³äËã·¨À´µÃµ½¸ü¾«È·µÄ¾ØĞÎ*/
+	/*åˆ©ç”¨æ¼«æ°´å¡«å……ç®—æ³•æ¥å¾—åˆ°æ›´ç²¾ç¡®çš„çŸ©å½¢*/
 	for (int i = 0; i < rects.size()-1; i++)
 	{
 		circle(result, rects[i].center, 3, Scalar(0, 255, 0), -1);
@@ -65,9 +65,9 @@ int main()
 		//Get the min size between width and height
 		float minSize = (rects[i].size.width < rects[i].size.height) ? rects[i].size.width : rects[i].size.height;
 		minSize = minSize * 0.5;
-		srand(time(NULL));//±íÊ¾ÉèÖÃÒ»¸öËæ»úÖÖ×Ó,Ã¿´ÎÔËĞĞ¶¼ÄÜ±£Ö¤Ëæ»úÖÖ×Ó²»Í¬
+		srand(time(NULL));//è¡¨ç¤ºè®¾ç½®ä¸€ä¸ªéšæœºç§å­,æ¯æ¬¡è¿è¡Œéƒ½èƒ½ä¿è¯éšæœºç§å­ä¸åŒ
 
-		//³õÊ¼»¯ÂşË®Ìî³äµÄ²ÎÊı
+		//åˆå§‹åŒ–æ¼«æ°´å¡«å……çš„å‚æ•°
 		Mat mask;
 		mask.create(input.rows + 2, input.cols + 2, CV_8UC1);
 		mask = Scalar::all(0);
@@ -96,7 +96,7 @@ int main()
 		Mat_<uchar>::iterator end = mask.end<uchar>();
 		for (; itmask != end; ++itmask)
 			if (*itmask == 255)
-				pointsInterest.push_back(itmask.pos());//pos()·µ»Ø×ø±êµã
+				pointsInterest.push_back(itmask.pos());//pos()è¿”å›åæ ‡ç‚¹
 		RotatedRect minRect = minAreaRect(pointsInterest);
 		bool a = verifySizes(minRect);
 		if (a)
@@ -116,24 +116,24 @@ int main()
             
 			//Create and rotate image.
 			Mat img_rotated;
-			warpAffine(input, img_rotated, rotmat, input.size(), CV_INTER_CUBIC);  //·ÂÉä±ä»»
+			warpAffine(input, img_rotated, rotmat, input.size(), CV_INTER_CUBIC);  //ä»¿å°„å˜æ¢
 			
 			Size rect_size = minRect.size;
 			if (r < 1)
-				swap(rect_size.width, rect_size.height);//¼ÓËüÊÇÎªÁËµ÷ÕûÊ¹width´óÓÚheight
+				swap(rect_size.width, rect_size.height);//åŠ å®ƒæ˜¯ä¸ºäº†è°ƒæ•´ä½¿widthå¤§äºheight
 			Mat img_crop;
-			getRectSubPix(img_rotated, rect_size, minRect.center, img_crop);//´ÓÔ­Í¼ÏñÖĞÌáÈ¡ÌáÈ¡Ò»¸ö¸ĞĞËÈ¤µÄ¾ØĞÎÇøÓòÍ¼Ïñ
+			getRectSubPix(img_rotated, rect_size, minRect.center, img_crop);//ä»åŸå›¾åƒä¸­æå–æå–ä¸€ä¸ªæ„Ÿå…´è¶£çš„çŸ©å½¢åŒºåŸŸå›¾åƒ
 			//namedWindow("img_crop", CV_WINDOW_NORMAL);
 			//imshow("img_crop", img_crop);
 
 			Mat resultResized;
-			resultResized.create(36, 136, CV_8UC3);//³ß´ç±äÎª36*136
+			resultResized.create(36, 136, CV_8UC3);//å°ºå¯¸å˜ä¸º36*136
 			resize(img_crop, resultResized, resultResized.size(), 0, 0, INTER_CUBIC);
 			Mat grayResult;
 			cvtColor(resultResized, grayResult, CV_BGR2GRAY);
 			imshow("grayResult", grayResult);
 
-			//equalizeHist(grayResult, grayResult);//¼ÓÁËÒÔºóĞ§¹û·´¶ø²»ºÃ
+			//equalizeHist(grayResult, grayResult);//åŠ äº†ä»¥åæ•ˆæœåè€Œä¸å¥½
 			//imshow("gray3Result", grayResult);
 			Mat Result_threshold;
 			threshold(grayResult, Result_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
@@ -143,12 +143,17 @@ int main()
 			GetTextProject(Result_threshold, pos);
 
 
-			//·ÖÀà³µÅÆºÅÓë·Ç³µÅÆºÅ
-			Ptr<ml::SVM> svm = ml::SVM::create();
-			svm->load("svm_hist.xml");
+			//åˆ†ç±»è½¦ç‰Œå·ä¸éè½¦ç‰Œå·
+			//Ptr<ml::SVM> svm = ml::SVM::create();
+			//svm->load("svm_hist.xml");
+			
+			CvSVM svm;
+			string path="svm.xml";
+			svm.load(path.c_str(),"svm");
+			
 			Mat p = Mat(pos, true);
 			p.convertTo(p, CV_32FC1);
-			int pred = (int)svm->predict(p); //·µ»Ø±êÇ©
+			int pred = (int)svm->predict(p); //è¿”å›æ ‡ç­¾
 			printf("%d\n", pred);
 
 		}
@@ -161,8 +166,8 @@ int main()
 	return 0;
 }
 
-//¶Ô¼ì²âµ½µÄÇøÓò×öÒ»Ğ©»ù±¾µÄÑéÖ¤£¬ÕâĞ©ÑéÖ¤»ùÓÚÃæ»ıÓë¿í¸ß±È¡£
-//³µÅÆÇøÓò£ºÓĞ40%µÄÎó²î·¶Î§ÄÚ£¬Æä¿í¸ß±ÈÎª520/110 = 4.727272 
+//å¯¹æ£€æµ‹åˆ°çš„åŒºåŸŸåšä¸€äº›åŸºæœ¬çš„éªŒè¯ï¼Œè¿™äº›éªŒè¯åŸºäºé¢ç§¯ä¸å®½é«˜æ¯”ã€‚
+//è½¦ç‰ŒåŒºåŸŸï¼šæœ‰40%çš„è¯¯å·®èŒƒå›´å†…ï¼Œå…¶å®½é«˜æ¯”ä¸º520/110 = 4.727272 
 
 bool verifySizes(RotatedRect candidate)
 {
@@ -187,7 +192,7 @@ bool verifySizes(RotatedRect candidate)
 }
 
 
-void GetTextProject(Mat src, vector<int>& pos) {// pos¾ÍÊÇÓÃÓÚ´æ´¢´¹Ö±Í¶Ó°ºÍË®Æ½Í¶Ó°µÄÎ»ÖÃ
+void GetTextProject(Mat src, vector<int>& pos) {// poså°±æ˜¯ç”¨äºå­˜å‚¨å‚ç›´æŠ•å½±å’Œæ°´å¹³æŠ•å½±çš„ä½ç½®
 
 		
 	for (int i = 0; i < src.cols; i++)// H_PROJECT
