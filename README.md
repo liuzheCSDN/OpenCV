@@ -16,3 +16,5 @@ opencv3.4.3的DNN模块调用bvlc_googlenet.caffemodel实现图像分类
 6、facedelete/ pedestrianHOG.cpp：采用HOG+SVM进行 行人识别
 
 7、facedelete/LBP_face.cpp:实现LBPCascades进行人脸检测
+
+8、SVMexample：主要是SVM的训练即预测的使用范例，实现车牌识别，不过准确率极低。
